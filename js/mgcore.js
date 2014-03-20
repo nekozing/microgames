@@ -9,7 +9,11 @@
 		'LEFTARROW' : 37,
 		'UPARROW'   : 38,
 		'RIGHTARROW': 39,
-		'DOWNARROW' : 40
+		'DOWNARROW' : 40,
+		'W'         : 87,
+		'S'         : 83,
+		'A'         : 65,
+		'D'         : 68
 	};
 	var supportedEventMap = {
 		'directionArrowKeys' : {
@@ -24,13 +28,16 @@
 		'directionWASDKeys'  : {
 			'type' : EVENTTYPE.KEYBOARD,
 			'functionKeyMaps' : {
-
+				'left'  : KEY.A,
+				'right' : KEY.D,
+				'up'    : KEY.W,
+				'down'  : KEY.S
 			}
 		},
 		'mouseLeftClick' : {
 
 		}
-	}
+	};
 	var mg = {
 		p : function(x, y){
 			return new mg.point2d(x, y);
@@ -39,7 +46,7 @@
 			this.x = x;
 			this.y = y;
 		},
-		createEvent : function(listener, callObj, eventName){
+		createEvent : function(callObj, eventName){
 			var eventInfo = supportedEventMap[eventName];
 			if(eventInfo.type == EVENTTYPE.KEYBOARD){
 				if(!callObj.eventMapping){
@@ -57,7 +64,7 @@
 			callObj.delegateKeys = this.delegateKeys;
 			listener.addEventListener('keydown', callObj.delegateKeys.bind(callObj));
 			for(var i=0; i<eventNames.length; i++){
-				this.createEvent(eventNames[i], callObj, eventNames);
+				this.createEvent(callObj, eventNames[i]);
 			}
 		},
 		delegateKeys : function(event){

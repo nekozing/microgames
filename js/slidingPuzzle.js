@@ -2,7 +2,7 @@ var Game = {
 	start : function(listenerObject){
 		if(!listenerObject)
 			listenerObject = window;
-		mg.bindEvents(listenerObject, this, ['directionArrowKeys']);
+		mg.bindEvents(listenerObject, this, ['directionArrowKeys', 'directionWASDKeys']);
 	},
 	onLeft : function(){
 		console.log('left');
