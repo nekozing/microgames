@@ -1,19 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<script src='./js/mgcore.js'></script>
-	<script src='./js/slidingPuzzle.js'></script>
-	<script>
-	Game.start();
-	</script>
-	<style>
-	body{
-		width:800px;
-		margin: 0 auto;
-	};
-	</style>
-</head>
-<body>
-	<canvas width='800' height='600'></canvas>
-</body>
+	<head>
+		<script src="./js/audiocore.js"></script>
+		<script>
+			// var context = new webkitAudioContext();
+			// var oscillator = context.createOscillator();
+
+			// oscillator.type = 0;
+			// oscillator.frequency.value = 440;
+			// oscillator.connect(context.destination);
+			// oscillator.noteOn(0);
+var context;
+var w;
+var h;
+var MAX_SUPPORTED_TOUCHES = 10;
+function init(){
+	w = window.innerWidth;
+	h = window.innerHeight;
+	var canvas = document.getElementsByTagName('canvas')[0];
+	context = canvas.getContext('2d');
+	canvas.width = w;
+	canvas.height = h;
+	bindTouch(canvas);
+}
+var updateStarted = false;
+function updateCanvas(touches){
+	context.clearRect(0, 0, w, h);
+	if(updateStarted) return;
+	updateStarted = true;
+	for(var i= 0; i< touches.length; i++){
+		var touch = touches[i];
+
+		var px = touch.pageX;
+		var py = touch.pageY;
+		context.beginPath();
+		context.arc(px, py, 20, 0, 2*Math.PI, true);
+
+		context.fillStyle = "rgba(0, 0, 200, 0.2)";
+		context.fill();
+
+		context.lineWidth = 2.0;
+		context.strokeStyle = "rgba(0, 0, 200, 0.8)";
+		context.stroke();
+	}
+	updateStarted = false;
+}
+function bindTouch(canvas){
+	canvas.addEventListener('touchstart', function(){
+
+	});
+	canvas.addEventListener('touchmove', function(e){
+		e.preventDefault();
+		updateCanvas(event.touches);
+	});
+	canvas.addEventListener('touchend', function(){
+
+	});
+}
+		</script>
+	</head>
+	<body>
+		<canvas></canvas>
+		<script>init();</script>
+	</body>
 </html>
