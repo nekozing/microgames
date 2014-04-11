@@ -79,7 +79,7 @@
 			return arr;
 		}(),
 		playNote : function(id, frequency, gain){
-			if(!id) return;
+			if(id == null) return;
 			if(this.unusedNote.length == 0) return;
 
 			var noteNumber = this.unusedNote.pop();
@@ -89,13 +89,13 @@
 			
 		},
 		modifyNote : function(id, frequency, gain){
-			if(!id || this.usedNotesIndex[id] == null) return;
+			if(id == null || this.usedNotesIndex[id] == null) return;
 
 			var noteNumber = this.usedNotesIndex[id];
 			this.notePool[noteNumber].edit(frequency, gain);
 		},
 		stopNote : function(id){
-			if(!id || this.usedNotesIndex[id] == null) return;
+			if(id == null || this.usedNotesIndex[id] == null) return;
 			var noteNumber = this.usedNotesIndex[id];
 
 			this.notePool[noteNumber].pause();

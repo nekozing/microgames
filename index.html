@@ -13,7 +13,14 @@
 var context;
 var w;
 var h;
-var MAX_SUPPORTED_TOUCHES = 10;
+var MAX_SUPPORTED_TOUCHES = 6;
+
+var MAX_SUPPORTED_FREQ = 4186.01;
+var MIN_SUPPORTED_FREQ = 27.5;
+
+var MAX_SUPPORTED_GAIN = 1;
+var MIN_SUPPORTED_GAIN = 0.1;
+
 function init(){
 	w = window.innerWidth;
 	h = window.innerHeight;
@@ -45,21 +52,55 @@ function updateCanvas(touches){
 	}
 	updateStarted = false;
 }
-function bindTouch(canvas){
-	canvas.addEventListener('touchstart', function(){
 
+var frequencyRange = MAX_SUPPORTED_FREQ - MIN_SUPPORTED_FREQ;
+function getMappedFreqency(x){
+
+	return MIN_SUPPORTED_FREQ + frequencyRange * x / w; 
+}
+var gainRange = MAX_SUPPORTED_GAIN - MIN_SUPPORTED_GAIN;
+function getMappedGain(y){
+	return MIN_SUPPORTED_GAIN + gainRange * y / h;
+}
+
+function bindTouch(canvas){
+	canvas.addEventListener('touchstart', function(e){
+		e.preventDefault();
+		var changedTouches = e.changedTouches;
+		for(var i= 0 ; i< changedTouches.length; i++){
+			var touch = changedTouches[i];
+			var freq = getMappedFreqency(touch.pageX);
+			var gain = getMappedGain(touch.pageY);
+			ac.playNote(touch.identifier, freq, gain);
+		}
 	});
 	canvas.addEventListener('touchmove', function(e){
 		e.preventDefault();
-		updateCanvas(event.touches);
+		var touches = e.touches;
+		for(var i= 0 ; i< touches.length; i++){
+			var touch = touches[i];
+			var freq = getMappedFreqency(touch.pageX);
+			var gain = getMappedGain(touch.pageY);
+			ac.modifyNote(touch.identifier, freq, gain);
+		}
+		
 	});
-	canvas.addEventListener('touchend', function(){
-
+	canvas.addEventListener('touchend', function(e){
+		e.preventDefault();
+		var changedTouches = e.changedTouches;
+		for(var i= 0 ; i< changedTouches.length; i++){
+			var touch = changedTouches[i];
+			var freq = getMappedFreqency(touch.pageX);
+			var gain = getMappedGain(touch.pageY);
+			ac.stopNote(touch.identifier, freq, gain);
+		}
 	});
 }
 		</script>
 	</head>
 	<body>
+		<div>
+		</div>
 		<canvas></canvas>
 		<script>init();</script>
 	</body>
