@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./game.js"></script>
+        <style>
+            body : {
+                width : 960px;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="screen" width="800px" height="600px"></canvas>
+    </body>
+    <script>
+        Game.init(document.getElementById("screen"));
+        Game.run();
+    </script>
+</html>
